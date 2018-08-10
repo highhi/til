@@ -1,4 +1,12 @@
 type User {
   id: ID! @unique
   name: String!
+  todos: [Todo!]!
+}
+
+type Todo {
+  id: ID! @unique
+  title: String!
+  text: String
+  user: User!
 }
