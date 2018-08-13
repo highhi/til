@@ -6,7 +6,7 @@ const httpLink = new HttpLink({
   uri: 'http://localhost:4466',
 })
 
-export default function apolloClient(): ApolloCLient<{}> {
+export default function apolloClient() {
   return new ApolloCLient({
     cache: new InMemoryCache(),
     link: httpLink,
