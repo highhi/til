@@ -22,7 +22,7 @@ export default class TodoForm extends React.Component<{}, IState> {
 
   public render() {
     return(
-      <Mutation<any, IVariables> mutation={addTodoMutation}>
+      <Mutation mutation={addTodoMutation}>
         {(addTodo) => (
           <form onSubmit={this.onSubmit(addTodo)}>
             <UserSelect value={this.state.userId} onChange={this.onChangeUser} />
@@ -58,14 +58,13 @@ export default class TodoForm extends React.Component<{}, IState> {
     this.setState({ title: '', text: '' })
   }
 
-  private onSubmit = (mutation: MutationFn): (event: React.FormEvent<HTMLFormElement>) => void => {
+  private onSubmit = (mutation: MutationFn<any, IVariables>): (event: React.FormEvent<HTMLFormElement>) => void => {
     return event => {
       event.preventDefault()
-      const formData = new FormData(event.currentTarget as HTMLFormElement)
       mutation({ variables: {
-        text: formData.get('text'),
-        title: formData.get('title'),
-        userId: formData.get('user'),
+        text: this.state.text,
+        title: this.state.title,
+        userId: this.state.userId,
       } })
       this.clearState()
     }

@@ -14,10 +14,10 @@ interface IChildProps {
 
 interface IProps {
   value: string,
-  onChange(event: React.FormEvent<HTMLSelectElement>): void,
+  onChange(event: React.ChangeEvent<HTMLSelectElement>): void
 }
 
-export default graphql<IProps, IData, {}, IChildProps>(usersQuery)(({ data, value, onChange }): JSX.Element => {
+const UserSelect: React.SFC<IChildProps & IProps> = (({ data, value, onChange }): JSX.Element => {
   if (data.loading) {
     return <p>loading...</p>
   }
@@ -25,10 +25,13 @@ export default graphql<IProps, IData, {}, IChildProps>(usersQuery)(({ data, valu
   if (data.error) {
     return <p>{data.error.message}</p>
   }
-
   const users = data.users.map(user => (
     <option value={user.id} key={user.id}>{user.name}</option>
   ))
 
   return <select value={value} onChange={onChange} name="user">{users}</select>
 })
+
+UserSelect.displayName = 'UserSelect'
+
+export default graphql<IProps, IData, {}, IChildProps>(usersQuery)(UserSelect)
