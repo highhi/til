@@ -3,12 +3,7 @@ import { Mutation, MutationFn } from 'react-apollo'
 import UserSelect from '../UserSelect/UserSelect'
 import Button from '../../foundations/Button/Button'
 import addTodoMutation from '../../../queries/addTodos'
-
-interface IVariables {
-  text: string
-  title: string,
-  userId: string,
-}
+import { addTodoVariables as IVariables } from '../../../queries/__generated__/addTodo'
 
 interface IState {
   text: string,
@@ -22,7 +17,7 @@ export default class TodoForm extends React.Component<{}, IState> {
 
   public render() {
     return(
-      <Mutation mutation={addTodoMutation}>
+      <Mutation<any, IVariables> mutation={addTodoMutation}>
         {(addTodo) => (
           <form onSubmit={this.onSubmit(addTodo)}>
             <UserSelect value={this.state.userId} onChange={this.onChangeUser} />
