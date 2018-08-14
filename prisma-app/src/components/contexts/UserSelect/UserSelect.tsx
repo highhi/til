@@ -1,9 +1,10 @@
 import * as React from 'react'
 import { graphql } from 'react-apollo'
 import usersQuery from '../../../queries/users'
+import { getUsers_users as IUser } from '../../../queries/__generated__/getUsers'
 
 interface IData {
-  users: Array<{ id: string, name: string }>
+  users: IUser[]
   loading: boolean,
   error: Error
 }
@@ -25,6 +26,7 @@ const UserSelect: React.SFC<IChildProps & IProps> = (({ data, value, onChange })
   if (data.error) {
     return <p>{data.error.message}</p>
   }
+
   const users = data.users.map(user => (
     <option value={user.id} key={user.id}>{user.name}</option>
   ))

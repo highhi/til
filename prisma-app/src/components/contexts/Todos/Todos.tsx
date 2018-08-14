@@ -2,21 +2,10 @@ import * as React from 'react'
 import { graphql } from 'react-apollo'
 import todosQuery from '../../../queries/todos'
 import { IDataMeta } from '../../../types'
-
-interface IUser {
-  id: string,
-  name: string,
-}
-
-interface ITodo {
-  id: string,
-  title: string,
-  text: string,
-  user: IUser
-}
+import { getTodos_todoes as ITodo } from '../../../queries/__generated__/getTodos'
 
 interface IData extends IDataMeta {
-  // prisma的にはtodoの複数形はtodosではなくtodoesらしい
+  // prismaだとtodoの複数形はtodoesになる
   todoes: ITodo[]
 }
 
