@@ -1,45 +1,58 @@
 import * as React from 'react'
-import { graphql } from 'react-apollo'
+import { Query } from 'react-apollo'
 import todosQuery from '../../../queries/todos'
-import { IDataMeta } from '../../../types'
+import onTodoAdded from '../../../queries/onTodoAdded'
+// import { IDataMeta } from '../../../types'
 import { getTodos_todoes as ITodo } from '../../../queries/__generated__/getTodos'
 
-interface IData extends IDataMeta {
-  // prismaだとtodoの複数形はtodoesになる
-  todoes: ITodo[]
-}
+// interface IData extends IDataMeta {  
+//   todoes: ITodo[]
+// }
 
 interface IProps {
-  data: IData
+  todoes: ITodo[]
+  subscribe(): void
 }
 
-const Todos: React.SFC<IProps> = ({ data }) => {
-  if (data.loading) {
-    return <p>loading...</p>
+class Todos extends React.Component<IProps, {}> {
+  public componentDidMount() {
+    this.props.subscribe()
   }
 
-  if (data.error) {
-    return <p>{data.error.message}</p>
+  public render() {
+    const todos = this.props.todoes || []
+    return <div>
+      {todos.map(todo => (
+        <p key={todo.id}>{todo.title}</p>
+      ))}
+    </div>
   }
-
-  const todos = data.todoes.map(todo => (
-    <tr key={todo.id}>
-      <td>{todo.title}</td>
-      <td>{todo.text}</td>
-      <td>{todo.user.name}</td>
-    </tr>
-  ))
-
-  return <table>
-    <tr>
-      <td>Title</td>
-      <td>Text</td>
-      <td>Auther</td>
-    </tr>
-    <>{todos}</>
-  </table>
 }
 
-Todos.displayName = 'Todos'
+const TodosWithData = () => (
+  <Query<any> query={todosQuery}>
+    {({ subscribeToMore, data }) =>
+      <Todos todoes={data!.todoes} subscribe={() =>
+        subscribeToMore({
+          document: onTodoAdded,
+          updateQuery: (prev, { subscriptionData }) => {
+            if (!subscriptionData.data) {
+              return prev
+            }
 
-export default graphql<{}, IData, {}, IProps>(todosQuery)(Todos)
+            // prismaサーバーから直接値をフェッチしているため最後のnodeの中に値が格納されている
+            // そのため<Qery>のData型が本来の型（IData）と一致しないためanyとしている
+            // TODO: クライアント用のGraphQLサーバーを用意する
+            const todo = subscriptionData.data.todo.node
+
+            return Object.assign({}, prev, {
+              todoes: [todo, ...prev.todoes]
+            })
+          }
+        })
+      } />
+    }
+  </Query>
+)
+
+export default TodosWithData
