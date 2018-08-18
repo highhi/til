@@ -1,11 +1,9 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { ApolloProvider } from 'react-apollo'
-import App from './App';
-import './index.css';
 import apolloClient from './lib/apollo-client'
+import App from './App'
 import registerServiceWorker from './registerServiceWorker';
-
 
 ReactDOM.render(
   <ApolloProvider client={apolloClient()}>
