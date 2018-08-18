@@ -3,7 +3,11 @@
   "rules": {
     "ordered-imports": false,
     "no-console": false,
-    "jsx-no-lambda": false
+    "jsx-no-lambda": false,
+    "object-literal-sort-keys": false,
+    "no-unused-vars": [2, {
+      "argsIgnorePattern": "^_"
+    }]
   },
   "linterOptions": {
     "exclude": [
