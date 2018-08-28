@@ -1,13 +1,13 @@
 import * as React from 'react'
 import Input from '../Input/Inpurt'
 import Button from '../Button/Button'
-import { TodoActionCreator } from '../../actions'
+import { DispatchProps } from '../../containers/Form/Form'
 
 type State = {
   text: string
 }
 
-type Props = TodoActionCreator
+type Props = DispatchProps
 
 export default class Form extends React.Component<Props, State> {
   public static readonly displayName = 'Form'

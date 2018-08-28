@@ -1,12 +1,15 @@
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import Form from '../../components/Form/Form'
-import { addTodo } from '../../actions'
+import { addTodo, AddTodo } from '../../actions'
 
-const msp = () => ({})
+export type DispatchProps = {
+  addTodo(text: string): AddTodo
+}
 
-const mdp = (dispatch: Dispatch) => ({
-  addTodo(text: string) { return dispatch(addTodo(text)) }
-})
-
-export default connect(msp, mdp)(Form)
+export default connect<{}, DispatchProps>(
+  () => ({}),
+  (dispatch: Dispatch) => ({
+    addTodo: (text) => (dispatch(addTodo(text)))
+  })
+)(Form)

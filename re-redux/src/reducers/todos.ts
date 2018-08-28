@@ -1,6 +1,6 @@
 import { Reducer } from 'redux'
-import { TodoActions } from '../actions'
-import { addTodoUseCase } from '../usecase/todos'
+import { TodoActions, TodoActionTypes } from '../actions'
+import { addTodoUseCase, toggleTodoUseCase, deleteTodoUseCase } from '../usecase/todos'
 
 export type Todo = {
   id: number
@@ -15,8 +15,12 @@ export type State = {
 
 const todo: Reducer<State, TodoActions> = (state = {}, action) => {
   switch(action.type) {
-    case 'ADD_TODO':
+    case TodoActionTypes.ADD_TODO:
       return addTodoUseCase(state, action.payload)
+    case TodoActionTypes.TOGGLE_TODO:
+      return toggleTodoUseCase(state, action.payload.id)
+    case TodoActionTypes.DELETE_TODO:
+      return deleteTodoUseCase(state, action.payload.id)
     default:
       return state
   }
