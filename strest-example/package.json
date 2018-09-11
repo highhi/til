@@ -1,0 +1,12 @@
+{
+  "name": "strest-example",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "strest-cli": "^1.1.1"
+  },
+  "dependencies": {
+    "express": "^4.16.3"
+  }
+}

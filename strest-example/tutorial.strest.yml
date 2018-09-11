@@ -1,0 +1,28 @@
+version: 1
+
+requests:
+  bookRequest:
+    url: http://localhost:3001/books
+    method: GET
+    log: true
+    data:
+      params:
+        id: 100
+    validate:
+      json:
+        id: Type(Number)
+        title: Type(String)
+        userId: Type(Number)
+
+  userRequest:
+    url: http://localhost:3001/users
+    method: GET
+    log: true
+    data:
+      params:
+        id: Value(bookRequest.userId)
+    validate:
+      json:
+        id: Type(Number)
+        name: Type(String)
+        books: Type(Array)
